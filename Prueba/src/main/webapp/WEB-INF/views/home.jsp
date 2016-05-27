@@ -13,7 +13,7 @@
 
 <button type="button" onclick="location.href='/Prueba/products'">Ver Catalogo Productos</button>
 <button type="button" onclick="location.href='/Prueba/newOrder'">Nuevo Pedido</button>
-<input type="submit" value="Ver Pedidos"/>
-<input type="submit" value="Registrarse"/>
+<button type="button" onclick="location.href='/Prueba/orders'">Ver Pedidos</button>
+<button type="button" onclick="location.href='/Prueba/newClient'">Registrarse</button>
 </body>
 </html>

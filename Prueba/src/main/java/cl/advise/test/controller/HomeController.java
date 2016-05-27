@@ -11,11 +11,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import cl.advise.test.model.Cliente;
 import cl.advise.test.model.Producto;
+import cl.advise.test.service.ClientService;
 import cl.advise.test.service.ProductService;
 
 /**
@@ -28,6 +32,8 @@ public class HomeController {
 	
 	@Autowired
 	private ProductService productsService;
+	@Autowired
+	private ClientService clientsService;
 	
 	/**
 	 * Simply selects the home view to
@@ -35,25 +41,17 @@ public class HomeController {
 	 *  render by returning its name.
 	 */
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
-	public String home(Locale locale, Model model) {
-		//logger.info("Welcome home! The client locale is {}.", locale);
-		
-		Date date = new Date();
-		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-		
-		String formattedDate = dateFormat.format(date);
-		
-		model.addAttribute("serverTime", formattedDate );
+	public String home(Model model) {
 		
 		return "home";
 	}
 	
 	@RequestMapping(value = "/newOrder", method = RequestMethod.GET)
-	public ModelAndView addOrder(Locale locale, ModelAndView model) {
-		model = new ModelAndView("form");
+	public ModelAndView addOrder(ModelAndView model) {
+		model = new ModelAndView("newOrder");
 		List<Producto> listContact = productsService.getProductList();
 	    model.addObject("productsList", listContact);
-	    model.addObject("dfasdfasdff", new Producto());
+	    model.addObject("command", new Producto());
 	    
 		return model;
 		
@@ -66,6 +64,20 @@ public class HomeController {
 	    model.setViewName("products");
 	 
 	    return model;
+	}
+	
+	@RequestMapping(value = "/newClient", method = RequestMethod.GET)
+	public ModelAndView addClient() {
+		return new ModelAndView("newClient", "clientForm", new Cliente());
+		
+	}
+	
+	@RequestMapping(value = "/clientCreated", method = RequestMethod.POST)
+	public String addClient(@ModelAttribute("SpringWeb")Cliente cliente, ModelMap model){
+		model.addAttribute("id", clientsService.insert(cliente));
+		model.addAttribute("nombre", cliente.getNombre());
+		model.addAttribute("email", cliente.getEmail());
+		return "clientCreated";
 	}
 	
 }

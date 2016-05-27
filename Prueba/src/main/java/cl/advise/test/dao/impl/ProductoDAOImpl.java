@@ -28,7 +28,7 @@ public class ProductoDAOImpl extends JdbcDaoSupport implements ProductoDAO {
 		
 		this.insertProductoDao = new SimpleJdbcInsert(super.getJdbcTemplate());
 		this.insertProductoDao.withTableName("PRODUCTO");
-		this.insertProductoDao.usingGeneratedKeyColumns("ID_PRODUCTO");
+		this.insertProductoDao.usingGeneratedKeyColumns("PRODUCTO_ID");
 	}
 	
 	@Transactional
